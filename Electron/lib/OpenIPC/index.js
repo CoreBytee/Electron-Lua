@@ -30,8 +30,8 @@ class IpcClient extends WaitForEmitter {
             ThisClass.emit("Disconnected")
             ThisClass.emit("Return", {IPC_DISCONNECTED: true})
         }
-        this.WebSocket.onmessage =async function (data) {
-            var Decoded = JSON.parse(data)
+        this.WebSocket.onmessage = async function (data) {
+            var Decoded = JSON.parse(data.data.toString())
             ThisClass.HandleIncoming(Decoded)
         }
         
