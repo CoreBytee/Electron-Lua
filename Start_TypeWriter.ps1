@@ -1,2 +1,1 @@
-echo "hi"
-TypeWriter.exe executebuild --input=./Package/src/
+TypeWriter.exe executebuild --input=./Package/src/ --is-dev=true
