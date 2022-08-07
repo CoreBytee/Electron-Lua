@@ -1,0 +1,14 @@
+{
+    "name": "electron",
+    "description": "Electron for lua",
+    "version": "1.0.0",
+    "author": "CoreByte",
+    "license": "MIT",
+    "main": "index.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "dependencies": {
+        "electron": "^20.0.1"
+    }
+}
