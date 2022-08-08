@@ -17,7 +17,9 @@ return { InfoVersion = 1, -- Dont touch this
     Dependencies = {
         Luvit = {
             "creationix/coro-http",
-            "luvit/secure-socket"
+            "luvit/secure-socket",
+            "creationix/coro-spawn",
+            "creationix/coro-fs"
         },
         Git = {},
         Dua = {}
@@ -30,7 +32,7 @@ return { InfoVersion = 1, -- Dont touch this
     },
 
     Entrypoints = {
-        Main = "Electron.Bootstrap.Test"
+        Main = "Electron.bootstrap.Test"
     }
 
 }
