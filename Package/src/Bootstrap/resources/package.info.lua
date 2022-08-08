@@ -2,9 +2,9 @@
 
 return { InfoVersion = 1, -- Dont touch this
 
-    ID = "template", -- A unique id 
-    Name = "Template",
-    Description = "A typewriter template",
+    ID = "Electron-Lua-Bootstrap", -- A unique id 
+    Name = "Electron-Lua-Bootstrap",
+    Description = "Electron-Lua-Bootstrap",
     Version = "1.0.0",
 
     Author = {
@@ -16,7 +16,8 @@ return { InfoVersion = 1, -- Dont touch this
 
     Dependencies = {
         Luvit = {
-            -- Luvit dependencies ("username/projectname")
+            "creationix/coro-http",
+            "luvit/secure-socket"
         },
         Git = {},
         Dua = {}
@@ -29,8 +30,7 @@ return { InfoVersion = 1, -- Dont touch this
     },
 
     Entrypoints = {
-        Main = "ga.corebyte.template.Main"
-        -- CubyPackage = "some.other.entry.caused.by.another.package", -- a package can call another packages entrypoints
+        Main = "Electron.Bootstrap.Test"
     }
 
 }
