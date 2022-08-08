@@ -77,5 +77,12 @@ App.on(
             "AppReady",
             null
         )
+        IpcConnection.RegisterMessage(
+            "Close",
+            async function(Data, From, Sequence) {
+                console.log("Electron > Close")
+                App.quit()
+            }
+        )
     }
 )

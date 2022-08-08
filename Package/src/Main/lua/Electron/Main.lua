@@ -95,4 +95,8 @@ for Index, Object in pairs(Objects) do
         return NewObject
     end
 end
+ObjectWrappers.Close = function ()
+    IPC:Send("Node", "Close")
+    IPC:Disconnect()
+end
 return ObjectWrappers
