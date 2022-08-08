@@ -22,11 +22,11 @@ if FS.existsSync(Data.ElectronLocation .. "/node_modules/") == false then
     TypeWriter.Logger.Info("Installing node dependencies...")
     local function InstallDeps(Location)
         local Result = Spawn(
-            NodePath .. "/npm.cmd",
+            NodePath .. "/npm" .. (({["win32"] = ".cmd"})[TypeWriter.Os] or ""),
             {
                 args = {
                     "install",
-                    "--production"
+                    "--omit=dev"
                 },
                 cwd = Location,
                 stdio = {
@@ -62,7 +62,7 @@ IPC:RegisterMessage(
 )
 
 local Result, Error = Spawn(
-    NodePath .. "/npm.cmd",
+    NodePath .. "/npm" .. (({["win32"] = ".cmd"})[TypeWriter.Os] or ""),
     {
         args = {
             "run", "start", require("base64").encode(require("json").encode(
