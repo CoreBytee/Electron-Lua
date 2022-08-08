@@ -20,21 +20,26 @@ local IPC = Data.IPC
 local Spawn = require("coro-spawn")
 if FS.existsSync(Data.ElectronLocation .. "/node_modules/") == false then
     TypeWriter.Logger.Info("Installing node dependencies...")
-    local Result = Spawn(
-        NodePath .. "/npm.cmd",
-        {
-            args = {
-                "install",
-                "--production"
-            },
-            cwd = Data.ElectronLocation,
-            stdio = {
-                process.stdin.handle,
-                process.stdout.handle,
-                process.stderr.handle,
+    local function InstallDeps(Location)
+        local Result = Spawn(
+            NodePath .. "/npm.cmd",
+            {
+                args = {
+                    "install",
+                    "--production"
+                },
+                cwd = Location,
+                stdio = {
+                    process.stdin.handle,
+                    process.stdout.handle,
+                    process.stderr.handle,
+                }
             }
-        }
-    )
+        )
+        Result.waitExit()
+    end
+    InstallDeps(Data.ElectronLocation)
+    InstallDeps(Data.ElectronLocation .. "/lib/OpenIPC/")
 end
 
 local MadeObjects = {}
