@@ -1,2 +1,5 @@
-p("hi")
-Import("Electron")
+local Electron = Import("Electron")
+local Window = Electron.BrowserWindow()
+Window:on("page-title-updated", p)
+Window:LoadURL("https://cubic-inc.ga")
+Window:openDevTools()
