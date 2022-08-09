@@ -30,7 +30,7 @@ local Files = {
 
 local function DownloadFiles(Tag)
     for Index, FileName in pairs(Files) do
-        TypeWriter.Logger.Info("OpenIPC > Downloading " .. FileName .. "...")
+        TypeWriter.Logger.Info("Electron > Downloading " .. FileName .. "...")
         local Response, Body = Request(
             "GET",
             string.format(
