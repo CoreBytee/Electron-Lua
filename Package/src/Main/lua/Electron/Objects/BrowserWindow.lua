@@ -49,7 +49,7 @@ function BrowserWindow:initialize(Data, Id, Options)
         "CreateObject",
         {
             Type = "BrowserWindow",
-            Data = Options,
+            Options = Options,
             Id = Id
         }
     )
