@@ -34,12 +34,10 @@ const IpcConnection = new IpcClient(`Electron-${LaunchArgs.SessionId}`, "Node")
 App.on(
     "ready",
     function() {
-        console.log("Electron > Ready")
         var Objects = {}
         IpcConnection.RegisterMessage(
             "CreateObject",
             async function(Data, From, Sequence) {
-                console.log("Electron > CreateObject")
                 const Object = new Electron[Data.Type](Data.Options)
                 var ReturnData = {Emitter: false, Methods: {}}
                 if (Object.emit) {
@@ -68,7 +66,6 @@ App.on(
         IpcConnection.RegisterMessage(
             "CallMethod",
             async function(Data, From, Sequence) {
-                console.log("Electron > CallMethod")
                 return await Objects[Data.ObjectId][Data.Method](...Data.Args)
             }
         )
@@ -80,7 +77,6 @@ App.on(
         IpcConnection.RegisterMessage(
             "Close",
             async function(Data, From, Sequence) {
-                console.log("Electron > Close")
                 App.quit()
             }
         )
