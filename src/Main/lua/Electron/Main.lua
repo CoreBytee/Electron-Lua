@@ -1,15 +1,36 @@
-TypeWriter.Runtime.LoadFile(TypeWriter.ApplicationData .. "/Electron-Lua/IPC-Bootstrap.twr")
-TypeWriter.Runtime.LoadFile(TypeWriter.ApplicationData .. "/Electron-Lua/Get-Node.twr")
+local Resources = TypeWriter.LoadedPackages["Electron-Lua"].Resources
+TypeWriter.Runtime.LoadJson(Resources["/OpenIPC-TypeWriter.twr"])
+TypeWriter.Runtime.LoadJson(Resources["/Get-Node.twr"])
 TypeWriter.Runtime.LoadInternal("BetterEmitter")
+
 local NodePath, NodeVersion = Import("ga.corebyte.get-node").Download()
-local IPClient = Import("openipc.bootstrap").LoadAll()
+local IPClient = Import("openipc.connector")
 local Emitter = Import("ga.corebyte.BetterEmitter")
 local FS = require("FS")
+
+local ApplicationData = TypeWriter.ApplicationData .. "/Electron-Lua/"
+do
+    local ThisVersion = TypeWriter.LoadedPackages["Electron-Lua"].Package.Version
+    local ExtractVersionFile = ApplicationData .. "/ExtractVersion.txt"
+    local ThatVersion = FS.readFileSync(ExtractVersionFile)
+    if ThisVersion ~= ThatVersion then
+        TypeWriter.Logger.Warn("Invalid electron install found, installing.")
+        local ExtractFolder = ApplicationData .. "/Electron/"
+        local ElectonArchive = ApplicationData .. "/Electron.zip"
+        require("coro-fs").rmrf(ExtractFolder)
+        FS.writeFileSync(
+            ElectonArchive,
+            Resources["/Electron.zip"]
+        )
+        Import("Electron.Unzip")(ElectonArchive, ExtractFolder)
+        FS.writeFileSync(ExtractVersionFile, ThisVersion)
+    end
+end
 
 local Data = {
     SessionId = string.random(32),
     IsDev = TypeWriter.ArgumentParser:GetArgument("is-dev", "is-dev", "false") == "true",
-    ElectronLocation = TypeWriter.ApplicationData .. "/Electron-Lua/Electron/",
+    ElectronLocation = ApplicationData .. "/Electron/",
 }
 if Data.IsDev == true then
     Data.ElectronLocation = "./Electron/"
