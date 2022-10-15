@@ -7,6 +7,7 @@ rm -r ./Build/Temp/Electron/node_modules/
 rm ./Build/Temp/Electron/package-lock.json
 rm -r ./Build/Temp/Electron/lib/OpenIPC/node_modules/
 rm ./Build/Temp/Electron/lib/OpenIPC/package-lock.json
+rm ./src/Main/resources/Electron.zip
 Compress-Archive -Path ./Build/Temp/Electron/* -DestinationPath ./src/Main/resources/Electron.zip
 rm -r ./Build/Temp/
 
