@@ -9,6 +9,7 @@ local Emitter = Import("ga.corebyte.BetterEmitter")
 local FS = require("FS")
 
 local ApplicationData = TypeWriter.ApplicationData .. "/Electron-Lua/"
+FS.mkdirSync(ApplicationData)
 do
     local ThisVersion = TypeWriter.LoadedPackages["Electron-Lua"].Package.Version
     local ExtractVersionFile = ApplicationData .. "/ExtractVersion.txt"
