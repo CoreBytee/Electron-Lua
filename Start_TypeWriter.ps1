@@ -1,1 +1,1 @@
-TypeWriter.exe executebuild --input=./Package/src/ --is-dev=true
+TypeWriter.exe executebuild --is-dev=true
