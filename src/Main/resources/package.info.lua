@@ -5,7 +5,7 @@ return { InfoVersion = 1, -- Dont touch this
     ID = "Electron-Lua", -- A unique id 
     Name = "Electron-Lua",
     Description = "A Electron-Lua",
-    Version = "1.0.0",
+    Version = "2.0.0",
 
     Author = {
         Developers = {
@@ -17,6 +17,7 @@ return { InfoVersion = 1, -- Dont touch this
     Dependencies = {
         Luvit = {
             "creationix/coro-spawn",
+            "creationix/coro-fs",
             "creationix/base64"
         },
         Git = {},
