@@ -1,0 +1,69 @@
+{
+  "BuildInfo":{
+    "TypeWriter":{
+      "Name":"TypeWriter",
+      "Version":"4.7.1",
+      "Licence":"MIT"
+    },
+    "Date":"Fri Oct  7 16:09:48 2022"
+  },
+  "Package":{
+    "ID":"Get-Node",
+    "Author":{
+      "Developers":["CoreByte"],
+      "Contributors":[]
+    },
+    "Name":"Get-Node",
+    "Contact":{
+      "Source":"https://github.com/Dot-lua/TypeWriter/",
+      "Website":"https://cubic-inc.ga",
+      "Socials":[]
+    },
+    "Dependencies":{
+      "Luvit":["creationix/coro-http","creationix/coro-spawn"],
+      "Dua":[],
+      "Git":[]
+    },
+    "Entrypoints":{
+      "Main":"ga.corebyte.get-node.Test"
+    },
+    "Version":"1.1.0",
+    "InfoVersion":1,
+    "Description":"Get-Node"
+  },
+  "Code":{
+    "ga.corebyte.get-node":{
+      "RedirectTo":"ga.corebyte.get-node.Main",
+      "Type":"Redirect"
+    },
+    "ga.corebyte.get-node.Test":{
+      "Code":"p(Import(\"ga.corebyte.get-node\").Download())",
+      "Type":"Code"
+    },
+    "ga.corebyte.get-node.Download":{
+      "Code":"local Request = require(\"coro-http\").request\nlocal FS = require(\"fs\")\nlocal AppData = TypeWriter.ApplicationData .. \"/Node/\"\n\nlocal function StartsWith(Str, Start)\n    return (Str:sub(1, #Start) == Start)\nend\n\nreturn function (Location, NoExtract)\n    if Location == nil then\n        Location = AppData\n    end\n    FS.mkdirSync(Location)\n\n    if FS.existsSync(Location .. \"node.zip\") == false then\n        local Version = Import(\"ga.corebyte.get-node.GetTag\")().version\n        local DownloadUrl = Import(\"ga.corebyte.get-node.GetDownloadUrl\")(Version)\n        p(DownloadUrl)\n        if DownloadUrl == false then\n            return false\n        end\n        local Request, Body = Request(\n            \"GET\",\n            DownloadUrl\n        )\n        FS.writeFileSync(Location .. \"/node.zip\", Body)\n        FS.writeFileSync(Location .. \"/node.version\", Version)\n        \n    end\n    \n    if NoExtract == true then\n        return Location\n    end\n\n    if FS.existsSync(Location .. \"README.md\") == false then\n        Import(\"ga.corebyte.get-node.UnZip\")(Location .. \"node.zip\", Location)\n        local File\n        for Index, FileName in pairs(FS.readdirSync(Location)) do\n            if StartsWith(FileName, \"node-\") then\n                File = FileName\n            end\n        end\n        for Index, FileName in pairs(FS.readdirSync(Location .. File)) do\n            FS.renameSync(Location .. File .. \"/\" .. FileName, Location .. FileName)\n        end\n        FS.rmdirSync(Location .. File)\n        if ({win32 = true})[TypeWriter.Os] ~= true then\n            local Resources = TypeWriter.LoadedPackages[\"Get-Node\"].Resources\n            FS.writeFileSync(Location .. \"/node\", Resources[\"/scripts/node\"])\n            FS.writeFileSync(Location .. \"/npm\", Resources[\"/scripts/npm\"])\n            os.execute(\"chmod +x \" .. Location .. \"/node\")\n            os.execute(\"chmod +x \" .. Location .. \"/npm\")\n        end\n    end\n    process.env.PATH = process.env.PATH .. ({win32 = \";\", darwin = \":\"})[TypeWriter.Os] .. Location\n    return Location, FS.readFileSync(Location .. \"/node.version\")\nend",
+      "Type":"Code"
+    },
+    "ga.corebyte.get-node.UnZip":{
+      "Code":"return function (From, To)\n    local Result = require(\"coro-spawn\")(\n        \"tar\",\n        {\n            args = {\n                \"-xf\",\n                From,\n                \"-C\", To\n            }\n        }\n    )\n    Result.waitExit()\nend",
+      "Type":"Code"
+    },
+    "ga.corebyte.get-node.GetDownloadUrl":{
+      "Code":"local Request = require(\"coro-http\").request\nlocal BaseUrl = \"https://nodejs.org/dist/\"\n\nlocal Names =  {\n    [\"win32\"] = \"node-%s-win-%s.zip\",\n    [\"linux\"] = \"node-%s-linux-%s.tar.gz\",\n    [\"darwin\"] = \"node-%s-darwin-%s.tar.gz\"\n}\n\nreturn function (Version)\n    if Names[TypeWriter.Os] == nil then\n        return false\n    end\n    return BaseUrl .. Version .. \"/\" .. string.format(\n        Names[TypeWriter.Os],\n        Version,\n        require(\"jit\").arch\n    )\nend",
+      "Type":"Code"
+    },
+    "ga.corebyte.get-node.GetTag":{
+      "Code":"return function ()\n    local Request, Body = require(\"coro-http\").request(\n        \"GET\",\n        \"https://nodejs.org/dist/index.json\"\n    )\n    local Versions = require(\"json\").decode(Body)\n    local LtsVersions = {}\n    for Index, Version in pairs(Versions) do\n        if Version.lts then\n            table.insert(LtsVersions, Version)\n        end\n    end\n    return LtsVersions[1]\nend",
+      "Type":"Code"
+    },
+    "ga.corebyte.get-node.Main":{
+      "Code":"return {\n    Download = Import(\"ga.corebyte.get-node.Download\"),\n    GetDownloadUrl = Import(\"ga.corebyte.get-node.GetDownloadUrl\"),\n    GetTag = Import(\"ga.corebyte.get-node.GetTag\"),\n}\n",
+      "Type":"Code"
+    }
+  },
+  "Resources":{
+    "/package.info.lua":"-- See https://github.com/Dot-lua/TypeWriter/wiki/package.info.lua-format for more info\n\nreturn { InfoVersion = 1, -- Dont touch this\n\n    ID = \"Get-Node\",\n    Name = \"Get-Node\",\n    Description = \"Get-Node\",\n    Version = \"1.1.0\",\n\n    Author = {\n        Developers = {\n            \"CoreByte\"\n        },\n        Contributors = {}\n    },\n\n    Dependencies = {\n        Luvit = {\n            \"creationix/coro-http\",\n            \"creationix/coro-spawn\"\n        },\n        Git = {},\n        Dua = {}\n    },\n\n    Contact = {\n        Website = \"https://cubic-inc.ga\",\n        Source = \"https://github.com/Dot-lua/TypeWriter/\",\n        Socials = {}\n    },\n\n    Entrypoints = {\n        Main = \"ga.corebyte.get-node.Test\"\n    }\n\n}\n",
+    "/scripts/node":"#!/usr/bin/env sh\nSCRIPT=$(readlink -f \"$0\")\nSCRIPTPATH=$(dirname \"$SCRIPT\")\n\"$SCRIPTPATH/bin/node\" \"$@\"",
+    "/scripts/npm":"#!/usr/bin/env sh\nSCRIPT=$(readlink -f \"$0\")\nSCRIPTPATH=$(dirname \"$SCRIPT\")\n\"$SCRIPTPATH/bin/npm\" \"$@\""
+  }
+}
