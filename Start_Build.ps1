@@ -11,6 +11,6 @@ rm ./src/Main/resources/Electron.zip
 Compress-Archive -Path ./Build/Temp/Electron/* -DestinationPath ./src/Main/resources/Electron.zip
 rm -r ./Build/Temp/
 
-TypeWriter.exe build --branch=Main
+TypeWriter build --branch=Main
 cp ./.TypeWriter/Build/* ./Build/
 rm -r ./.TypeWriter/
