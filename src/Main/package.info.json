@@ -1,38 +1,40 @@
 {
-    "Id": "ElectronHelper",
-    "Name": "Electron Helper",
-    "Description": "An package to aid electron development on typewriter",
-    "Version": "1.0.0",
-
-    "Authors": {
-        "Developers": [
-            "CoreByte"
-        ],
-        "Contributors": []
-    },
-
-    "Contact": {
-        "Website": "",
-        "Source": "",
-        "Socials": {}
-    },
-
-    "Dependencies": [
-        {
-            "Source": "NPM",
-            "Package": "electron",
-            "Version": null,
-            "Type": "Packaged"
-        },
-        {
-            "Source": "NPM",
-            "Package": "klaw-sync",
-            "Version": null,
-            "Type": "Packaged"
-        }
-    ],
-
-    "Entrypoints": {
-        "Main": "electronhelper.Test"
-    }
+	"Id": "ElectronHelper",
+	"Name": "Electron Helper",
+	"Description": "An package to aid electron development on typewriter",
+	"Version": "1.0.0",
+	"Authors": {
+		"Developers": [
+			"CoreByte"
+		],
+		"Contributors": []
+	},
+	"Contact": {
+		"Website": "",
+		"Source": "",
+		"Socials": {}
+	},
+	"Dependencies": [
+		{
+			"Source": "NPM",
+			"Package": "electron",
+			"Version": "23.1.4",
+			"Type": "Packaged"
+		},
+		{
+			"Source": "NPM",
+			"Package": "klaw-sync",
+			"Version": "6.0.0",
+			"Type": "Packaged"
+		},
+		{
+			"Source": "NPM",
+			"Package": "is-electron",
+			"Version": "2.2.2",
+			"Type": "Packaged"
+		}
+	],
+	"Entrypoints": {
+		"Main": "electronhelper.Test"
+	}
 }
