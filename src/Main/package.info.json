@@ -23,14 +23,20 @@
 		},
 		{
 			"Source": "NPM",
-			"Package": "klaw-sync",
-			"Version": "6.0.0",
+			"Package": "is-electron",
+			"Version": "2.2.2",
 			"Type": "Packaged"
 		},
 		{
 			"Source": "NPM",
-			"Package": "is-electron",
-			"Version": "2.2.2",
+			"Package": "fs-extra",
+			"Version": "11.1.1",
+			"Type": "Packaged"
+		},
+		{
+			"Source": "NPM",
+			"Package": "hasha",
+			"Version": "5.2.2",
 			"Type": "Packaged"
 		}
 	],
