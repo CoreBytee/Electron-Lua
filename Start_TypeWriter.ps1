@@ -1,1 +1,0 @@
-TypeWriter.exe executebuild --is-dev=true
