@@ -1,8 +1,9 @@
 require("fs-extra").ensureDirSync(`${TypeWriter.ApplicationData}/ElectronHelper/`)
 
 if (require("is-electron")()) {
-    console.log("Running Electron")
+    console.log("aaaa")
+    console.log(require("electron").app)
+    module.exports = require("electron")
 } else {
-    console.log("Not running Electron")
     Import("electronhelper.run")
 }

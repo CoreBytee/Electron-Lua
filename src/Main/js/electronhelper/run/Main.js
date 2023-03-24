@@ -12,6 +12,7 @@ function HashFile(FilePath) {
         }
     )
 }
+
 const ApplicationData = `${TypeWriter.ApplicationData}/ElectronHelper/`
 const ExecutableRoot = Path.resolve(`${process.argv[1]}/../`)
 const StoredHashFile = `${ApplicationData}/StoredHash.txt`
@@ -25,15 +26,7 @@ if (StoredHash == "") {
 const StoredHashFolder = `${ApplicationData}/${StoredHash}`
 const FoundHashFolder = `${ApplicationData}/${TypeWriterHash}`
 
-console.log(TypeWriterHash)
-console.log(StoredHash)
-
-console.log(
-    Path.resolve(`${process.argv[1]}/../`)
-)
-
 if (TypeWriterHash != StoredHash) {
-    console.log(StoredHashFolder)
     FS.removeSync(StoredHashFolder)
     FS.mkdirSync(FoundHashFolder)
     
@@ -44,5 +37,17 @@ if (TypeWriterHash != StoredHash) {
     FS.writeFileSync(StoredHashFile, TypeWriterHash)
 }
 
-console.log(process.argv)
-console.log(require("electron"))
+console.log(`${require("electron")} ${FoundHashFolder}/Index.js ${process.argv.slice(2).join(" ")}`)
+
+SpawnSync(
+    require("electron"),
+    [
+        `${FoundHashFolder}/Index.js`, ...process.argv.slice(2)
+    ],
+    {
+        stdio: "inherit",
+        windowsHide: false
+    }
+)
+
+process.exit(0)
