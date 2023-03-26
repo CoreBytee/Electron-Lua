@@ -37,8 +37,6 @@ if (TypeWriterHash != StoredHash) {
     FS.writeFileSync(StoredHashFile, TypeWriterHash)
 }
 
-console.log(`${require("electron")} ${FoundHashFolder}/Index.js ${process.argv.slice(2).join(" ")}`)
-
 SpawnSync(
     require("electron"),
     [
