@@ -1,8 +1,9 @@
-const Electron = Import("electronhelper")
+const Electron = Import("electronhelper")()
+
 const App = Electron.app
 const BrowserWindow = Electron.BrowserWindow
 
-App.on("ready", function() {
+App.on("ready", function () {
     console.log("Ready")
     const Window = new BrowserWindow(
         {
