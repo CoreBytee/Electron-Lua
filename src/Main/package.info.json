@@ -38,9 +38,14 @@
 			"Package": "hasha",
 			"Version": "5.2.2",
 			"Type": "Packaged"
+		},
+		{
+			"Source": "NPM",
+			"Package": "electron-packager",
+			"Version": "17.1.1"
 		}
 	],
 	"Entrypoints": {
-		"Main": "electronhelper.Test"
+		"Main": "electronhelper.Test.Config"
 	}
 }

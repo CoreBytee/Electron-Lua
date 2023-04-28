@@ -1,51 +1,97 @@
-const HashA = require("hasha")
 const FS = require("fs-extra")
-const Path = require("path")
+const ElectronPackager = require("electron-packager")
 const SpawnSync = require("child_process").spawnSync
 
-function HashFile(FilePath) {
-    return HashA.fromFileSync(
-        FilePath,
-        {
-            encoding: "hex",
-            algorithm: "md5"
-        }
-    )
-}
-
 const ApplicationData = `${TypeWriter.ApplicationData}/ElectronHelper/`
-const ExecutableRoot = Path.resolve(`${process.argv[1]}/../`)
-const StoredHashFile = `${ApplicationData}/StoredHash.txt`
+const TypeWriterExportData = Import("electronhelper.Helpers.ExportTypeWriter")()
+const ExportedFolder = TypeWriterExportData[0]
+const ExportedHash = TypeWriterExportData[1]
+const ApplicationsFolder = `${ApplicationData}/Applications/`
+const ElectronHelperConfig = Import("electronhelper.Config")
+FS.ensureDirSync(ApplicationsFolder)
 
-FS.ensureFileSync(StoredHashFile)
-const TypeWriterHash = HashFile(TypeWriter.Executable)
-var StoredHash = FS.readFileSync(StoredHashFile, "utf-8")
-if (StoredHash == "") {
-    StoredHash = "a"
-}
-const StoredHashFolder = `${ApplicationData}/${StoredHash}`
-const FoundHashFolder = `${ApplicationData}/${TypeWriterHash}`
-
-if (TypeWriterHash != StoredHash) {
-    FS.removeSync(StoredHashFolder)
-    FS.mkdirSync(FoundHashFolder)
-    
-    FS.copySync(
-        ExecutableRoot,
-        FoundHashFolder
-    )
-    FS.writeFileSync(StoredHashFile, TypeWriterHash)
+function NeedsRebuild(StoredData, PackageData) {
+    return StoredData.Name != PackageData.Name || StoredData.IconHash != PackageData.IconHash || StoredData.ElectronVersion != ElectronHelperConfig.ElectronVersion || StoredData.TypeWriterHash != ExportedHash
 }
 
-SpawnSync(
-    require("electron"),
-    [
-        `${FoundHashFolder}/Index.js`, ...process.argv.slice(2)
-    ],
-    {
-        stdio: "inherit",
-        windowsHide: false
+function Run(PackageData) {
+    const ThisApplicationFolder = `${ApplicationsFolder}/${PackageData.PackageId}/`
+    FS.ensureDirSync(ThisApplicationFolder)
+
+    var StoredData = FS.readJSONSync(`${ThisApplicationFolder}/ApplicationData.json`, { throws: false }) || {}
+
+    function CallExe() {
+        SpawnSync(
+            StoredData.ApplicationExecutable,
+            [
+                `${ExportedFolder}/Index.js`, ...process.argv.slice(2)
+            ],
+            {
+                cwd: process.cwd(),
+                stdio: "inherit",
+                windowsHide: false
+            }
+        )
+        process.exit(0)
     }
-)
 
-process.exit(0)
+    if (NeedsRebuild(StoredData, PackageData)) {
+        if (StoredData.ApplicationFolder) {
+            FS.removeSync(StoredData.ApplicationFolder)
+        }
+
+        ElectronPackager(
+            {
+                dir: ExportedFolder,
+                name: PackageData.Name,
+                icon: PackageData.IconPath,
+                out: ThisApplicationFolder,
+                electronVersion: "23.1.4"
+            }
+        ).then(
+            function(AppPath) {
+                if (typeof AppPath == "array") {
+                    return
+                }
+                FS.writeJSONSync(
+                    `${ThisApplicationFolder}/ApplicationData.json`,
+                    {
+                        PackageId: PackageData.PackageId,
+                        Name: PackageData.Name,
+                        Icon: PackageData.Icon,
+                        IconHash: PackageData.IconHash,
+    
+                        ApplicationFolder: AppPath[0],
+                        ApplicationExecutable: `${AppPath[0]}/${TypeWriter.OS == "win32" ? `${PackageData.Name}.exe` : "unknown"}`,
+    
+                        ElectronVersion: ElectronHelperConfig.ElectronVersion,
+                        TypeWriterHash: ExportedHash
+                    }
+                )
+                StoredData = FS.readJSONSync(`${ThisApplicationFolder}/ApplicationData.json`)
+                CallExe()
+                process.exit(0)
+            }
+        )
+
+    } else {
+        CallExe()
+    }
+    
+
+}
+
+// SpawnSync(
+//     require("electron"),
+//     [
+//         `${ExportedFolder}/Index.js`, ...process.argv.slice(2)
+//     ],
+//     {
+//         stdio: "inherit",
+//         windowsHide: false
+//     }
+// )
+
+// process.exit(0)
+
+module.exports = Run
