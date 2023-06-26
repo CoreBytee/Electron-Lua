@@ -15,35 +15,11 @@
 		"Socials": {}
 	},
 	"Dependencies": [
-		{
-			"Source": "NPM",
-			"Package": "electron",
-			"Version": "23.1.4",
-			"Type": "Packaged"
-		},
-		{
-			"Source": "NPM",
-			"Package": "is-electron",
-			"Version": "2.2.2",
-			"Type": "Packaged"
-		},
-		{
-			"Source": "NPM",
-			"Package": "fs-extra",
-			"Version": "11.1.1",
-			"Type": "Packaged"
-		},
-		{
-			"Source": "NPM",
-			"Package": "hasha",
-			"Version": "5.2.2",
-			"Type": "Packaged"
-		},
-		{
-			"Source": "NPM",
-			"Package": "electron-packager",
-			"Version": "17.1.1"
-		}
+		"npm+electron@23.1.4",
+		"npm+is-electron@2.2.2",
+		"npm+fs-extra@11.1.1",
+		"npm+hasha@5.2.2",
+		"npm+electron-packager@17.1.1"
 	],
 	"Entrypoints": {
 		"Main": "electronhelper.Test.Config"
