@@ -21,7 +21,7 @@ module.exports = function(PackageId, PackageData) {
     if (require("is-electron")()) {
         if (PackageData) {
             if (PackageData.Load) {
-                Import(PackageData.Load)
+                ImportAsync(PackageData.Load)
             }
         }
         return TypeWriter.OriginalRequire("electron")
