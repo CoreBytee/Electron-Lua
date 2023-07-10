@@ -19,13 +19,15 @@ function HandlePackageData(PackageId, PackageData) {
 
 module.exports = function(PackageId, PackageData) {
     if (require("is-electron")()) {
+        TypeWriter.Logger.Information("ElectronHelper is running in electron")
         if (PackageData) {
             if (PackageData.Load) {
-                ImportAsync(PackageData.Load)
+                Import(PackageData.Load)
             }
         }
         return TypeWriter.OriginalRequire("electron")
     } else {
+        TypeWriter.Logger.Information("ElectronHelper is currently starting electron")
         const CompiledPackageData = HandlePackageData(PackageId, PackageData)
         Import("electronhelper.run")(CompiledPackageData)
     }
