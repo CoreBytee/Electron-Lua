@@ -1,34 +1,32 @@
-require("fs-extra").ensureDirSync(`${TypeWriter.ApplicationData}/ElectronHelper/`)
+const DefaultOptions = require("default-options")
+const IsElectron = require("is-electron")
 
-function HandlePackageData(PackageId, PackageData) {
-    const IconResourceLocation = (PackageData.Icon || {})[process.platform] || null
-    var IconPath
-    var IconHash
-    if (IconResourceLocation) {
-        IconPath = TypeWriter.ResourceManager.GetFilePath(IconResourceLocation)
-        IconHash = Import("electronhelper.Helpers.HashFile")(IconPath)
-    }
-    return {
-        PackageId: PackageId,
-        Name: PackageData.Name || PackageId,
-        Icon: IconResourceLocation,
-        IconPath: IconPath,
-        IconHash: IconHash
-    }
-}
-
-module.exports = function(PackageId, PackageData) {
-    if (require("is-electron")()) {
-        TypeWriter.Logger.Information("ElectronHelper is running in electron")
-        if (PackageData) {
-            if (PackageData.Load) {
-                Import(PackageData.Load)
+function HandleOptions(Options) {
+    return DefaultOptions(
+        Options,
+        {
+            Id: undefined,
+            Name: undefined,
+            Icon: {
+                Windows: "ElectronHelper:/logo.ico",
+                MacOs: "ElectronHelper:/logo.icns",
             }
         }
+    )
+}
+
+module.exports = async function(Options) {
+    Options = HandleOptions(Options)
+    
+    if (IsElectron()) {
+        TypeWriter.Logger.Information("ElectronHelper is running in electron")
         return TypeWriter.OriginalRequire("electron")
-    } else {
-        TypeWriter.Logger.Information("ElectronHelper is currently starting electron")
-        const CompiledPackageData = HandlePackageData(PackageId, PackageData)
-        Import("electronhelper.run")(CompiledPackageData)
     }
+
+    TypeWriter.Logger.Information("ElectronHelper is currently starting electron")
+
+    await (Import("electronhelper.Execute"))(Options)
+
+    TypeWriter.Logger.Information("ElectronHelper has finished running")
+    process.exit(0)
 }
