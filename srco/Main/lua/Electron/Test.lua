@@ -1,6 +1,0 @@
-local Electron = Import("Electron")
-local Window = Electron.BrowserWindow()
-Window:LoadURL("https://cubic-inc.ga")
-Window:openDevTools()
-Window:SetTitle("Electron-Lua")
-Window:SetMenu(nil, "")
