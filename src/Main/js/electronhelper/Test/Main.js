@@ -1,19 +1,21 @@
-const Electron = Import("electronhelper")()
 
-const App = Electron.app
-const BrowserWindow = Electron.BrowserWindow
 
-App.on("ready", function () {
-    console.log("Ready")
-    const Window = new BrowserWindow(
+async function Main() {
+    const ElectronHelper = Import("electronhelper")
+
+    const Electron = await ElectronHelper(
         {
-            width: 800,
-            height: 600,
-            webPreferences: {
-                nodeIntegration: true
-            }
+            Id: "ElectronHelper",
+            Name: "ElectronHelper",
         }
     )
-    Window.loadURL("https://www.google.com")
-})
-//console.log(Electron)
+
+    const App = Electron.app
+    await App.whenReady()
+    new Electron.BrowserWindow().loadURL("https://google.com")
+
+    console.log(Electron)
+
+}
+
+Main()
