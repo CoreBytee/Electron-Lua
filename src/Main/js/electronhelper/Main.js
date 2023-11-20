@@ -25,7 +25,7 @@ module.exports = async function(Options) {
 
     TypeWriter.Logger.Information("ElectronHelper is currently starting electron")
 
-    await (Import("electronhelper.Execute"))(Options)
+    await (await Import("electronhelper.Execute"))(Options)
 
     TypeWriter.Logger.Information("ElectronHelper has finished running")
     process.exit(0)

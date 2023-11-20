@@ -1,10 +1,10 @@
 const Steps = [
-    Import("electronhelper.Execute.Steps.ApplicationData"),
-    Import("electronhelper.Execute.Steps.ExportTypeWriter"),
-    Import("electronhelper.Execute.Steps.ApplicationFolder"),
-    Import("electronhelper.Execute.Steps.IconHash"),
-    Import("electronhelper.Execute.Steps.Build"),
-    Import("electronhelper.Execute.Steps.Execute")
+    await Import("electronhelper.Execute.Steps.ApplicationData"),
+    await Import("electronhelper.Execute.Steps.ExportTypeWriter"),
+    await Import("electronhelper.Execute.Steps.ApplicationFolder"),
+    await Import("electronhelper.Execute.Steps.IconHash"),
+    await Import("electronhelper.Execute.Steps.Build"),
+    await Import("electronhelper.Execute.Steps.Execute")
 ]
 
 module.exports = async function(PackageData) {

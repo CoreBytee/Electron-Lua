@@ -4,7 +4,7 @@ module.exports = {
     Name: "ApplicationData",
     Execute: async function(Options, Data) {
         Data.ApplicationData = `${TypeWriter.ApplicationData}/ElectronHelper/`
-        Data.Config = Import("electronhelper.Config")
+        Data.Config = await Import("electronhelper.Config")
         FS.ensureDirSync(Data.ApplicationData)
         
         return Data

@@ -1,7 +1,7 @@
 
 
 async function Main() {
-    const ElectronHelper = Import("electronhelper")
+    const ElectronHelper = await Import("electronhelper")
 
     const Electron = await ElectronHelper(
         {

@@ -1,5 +1,5 @@
 const FS = require("fs-extra")
-const HashFile = Import("electronhelper.Libraries.HashFile")
+const HashFile = await Import("electronhelper.Libraries.HashFile")
 
 const OsNames = {
     win32: "Windows",

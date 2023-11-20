@@ -1,6 +1,6 @@
 const FS = require("fs-extra")
 const Path = require("path")
-const HashFile = Import("electronhelper.Libraries.HashFile")
+const HashFile = await Import("electronhelper.Libraries.HashFile")
 
 module.exports = {
     Name: "ExportTypeWriter",
